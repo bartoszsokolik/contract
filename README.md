@@ -1,0 +1,2 @@
+# contract
+Spring cloud contract
