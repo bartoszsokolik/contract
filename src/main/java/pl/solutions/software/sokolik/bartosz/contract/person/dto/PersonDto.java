@@ -12,4 +12,5 @@ public class PersonDto {
     private final UUID id;
     private final String firstName;
     private final String lastName;
+    private final String quote;
 }

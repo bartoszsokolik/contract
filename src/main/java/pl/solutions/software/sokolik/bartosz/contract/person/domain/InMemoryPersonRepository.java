@@ -1,9 +1,8 @@
 package pl.solutions.software.sokolik.bartosz.contract.person.domain;
 
+import io.vavr.collection.List;
 import io.vavr.control.Option;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,7 +13,8 @@ class InMemoryPersonRepository implements PersonRepository {
 
     @Override
     public Person save(Person person) {
-        return repository.put(person.getId(), person);
+        repository.put(person.getId(), person);
+        return person;
     }
 
     @Override
@@ -24,7 +24,7 @@ class InMemoryPersonRepository implements PersonRepository {
 
     @Override
     public List<Person> findAll() {
-        return new ArrayList<>(repository.values());
+        return List.ofAll(repository.values());
     }
 
     @Override

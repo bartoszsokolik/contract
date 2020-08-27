@@ -9,6 +9,7 @@ class PersonDtoMapper {
                 .id(person.getId())
                 .firstName(person.getFirstName())
                 .lastName(person.getLastName())
+                .quote(person.getQuote())
                 .build();
     }
 }

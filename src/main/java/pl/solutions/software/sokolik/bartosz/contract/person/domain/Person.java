@@ -13,6 +13,7 @@ public class Person {
     private final UUID id = UUID.randomUUID();
     private final String firstName;
     private final String lastName;
+    private final String quote;
 
 //    public static class PersonBuilder {
 //        public PersonBuilder id(UUID id) {

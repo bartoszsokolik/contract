@@ -9,6 +9,7 @@ class PersonMapper {
                 .id(dto.getId())
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
+                .quote(dto.getQuote())
                 .build();
     }
 }

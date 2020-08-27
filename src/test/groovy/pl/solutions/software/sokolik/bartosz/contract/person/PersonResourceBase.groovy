@@ -8,12 +8,13 @@ import org.springframework.cloud.contract.verifier.messaging.boot.AutoConfigureM
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.MockMvc
 import pl.solutions.software.sokolik.bartosz.contract.person.domain.PersonService
+import pl.solutions.software.sokolik.bartosz.contract.sampledata.PersonSampleData
 import spock.lang.Specification
 
 @DirtiesContext
 @AutoConfigureMessageVerifier
 @WebMvcTest(controllers = PersonResource)
-class PersonResourceBaseIT extends Specification implements PersonSampleData {
+class PersonResourceBase extends Specification implements PersonSampleData {
 
     @Autowired
     MockMvc mockMvc
@@ -22,7 +23,7 @@ class PersonResourceBaseIT extends Specification implements PersonSampleData {
     PersonService personService = Mock()
 
     def setup() {
-        RestAssuredMockMvc.standaloneSetup(mockMvc)
-        personService.get(UUID.fromString('294c0951-b392-4fa9-9653-ad8f2b99b966')) >> savedPerson
+        RestAssuredMockMvc.mockMvc(mockMvc)
+        personService.get(UUID.fromString('294c0951-b392-4fa9-9653-ad8f2b99b966')) >> savedPersonDto
     }
 }

@@ -1,2 +1,15 @@
 server:
   port: 8090
+
+spring:
+  profiles:
+    active: sample-data
+  cache:
+    caffeine:
+      spec: maximumSize=50, expireAfterAccess=1m
+
+quote:
+  api:
+    url: 'https://quotes.rest/'
+    timeout: 5s
+

@@ -1,13 +1,13 @@
 package pl.solutions.software.sokolik.bartosz.contract.person.domain;
 
+import io.vavr.collection.List;
 import lombok.RequiredArgsConstructor;
 import pl.solutions.software.sokolik.bartosz.contract.person.dto.CreatePersonDto;
 import pl.solutions.software.sokolik.bartosz.contract.person.dto.PersonDto;
 import pl.solutions.software.sokolik.bartosz.contract.person.dto.UpdatePersonDto;
+import pl.solutions.software.sokolik.bartosz.contract.quote.domain.QuoteService;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class PersonService {
@@ -15,6 +15,7 @@ public class PersonService {
     private final PersonRepository personRepository;
     private final PersonDtoMapper personDtoMapper;
     private final PersonMapper personMapper;
+    private final QuoteService quoteService;
 
     public PersonDto create(CreatePersonDto dto) {
         Person personToSave = Person.builder()
@@ -43,9 +44,25 @@ public class PersonService {
 
     public List<PersonDto> findAll() {
         return personRepository.findAll()
-                .stream()
-                .map(personDtoMapper::map)
-                .collect(Collectors.toList());
+                .map(personDtoMapper::map);
+    }
+
+    public void delete(UUID id) {
+        personRepository.deleteById(id);
+    }
+
+    public PersonDto assignRandomQuote(UUID personId) {
+        PersonDto personDto = find(personId);
+        String quote = quoteService.getRandomCategory()
+                .map(quoteService::getRandomQuoteForCategory)
+                .getOrElse(quoteService::getRandomQuote);
+
+        personDto = personDto.toBuilder()
+                .quote(quote)
+                .build();
+
+        Person savedPerson = personRepository.save(personMapper.map(personDto));
+        return personDtoMapper.map(savedPerson);
     }
 
     private PersonDto find(UUID id) {
@@ -54,7 +71,4 @@ public class PersonService {
                 .getOrElseThrow(() -> new RuntimeException(String.format("Person with id: %s not found", id)));
     }
 
-    public void delete(UUID id) {
-        personRepository.deleteById(id);
-    }
 }
